@@ -7,6 +7,9 @@ Foundry only knows about audio that already sits in a playlist. Audio Codex inde
 folders across User Data, S3 and The Forge, so a collection of thousands of tracks becomes
 something you can browse, search and reuse.
 
+<img width="1193" height="679" alt="image" src="https://github.com/user-attachments/assets/cbbf9bfd-da60-4535-b34f-99c46bcec833" />
+
+
 ## Features
 
 - **Library roots**: index one or more folders from `data`, `s3` or `forgevtt` file sources.
