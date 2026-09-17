@@ -1,0 +1,32 @@
+<div class="ac-playlists">
+  <div class="ac-playlists-head">
+    <span class="ac-name">{{localize "AUDIO_CODEX.Playlists"}}</span>
+    {{#if this.canCreatePlaylist}}
+    <button type="button" data-action="createPlaylist" data-tooltip="AUDIO_CODEX.Playlist.Create"><i class="fa-solid fa-plus" inert></i></button>
+    {{/if}}
+  </div>
+  <div class="ac-playlist-list">
+    {{#each this.playlists}}
+    <div class="ac-playlist" data-playlist-id="{{this.id}}">
+      <div class="ac-playlist-head" data-action="togglePlaylist">
+        <i class="fa-solid {{#if this.expanded}}fa-caret-down{{else}}fa-caret-right{{/if}} ac-caret" inert></i>
+        {{#if this.cover}}<img class="ac-art ac-art-folder" src="{{this.cover}}" loading="lazy" decoding="async" alt="" draggable="false">{{else}}<i class="fa-solid fa-record-vinyl ac-art ac-art-folder ac-art-empty" inert></i>{{/if}}
+        <span class="ac-name">{{this.name}}</span>
+        <span class="ac-count">{{this.count}}</span>
+      </div>
+      {{#if this.expanded}}
+      <div class="ac-sounds">
+        {{#each this.sounds}}
+        <div class="ac-sound" data-sound-id="{{this.id}}">
+          {{#if this.cover}}<img class="ac-art" src="{{this.cover}}" loading="lazy" decoding="async" alt="" draggable="false">{{else}}<i class="fa-solid fa-music ac-art ac-art-empty" inert></i>{{/if}}
+          <span class="ac-name">{{this.name}}</span>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+    </div>
+    {{else}}
+    <p class="ac-empty">{{localize "AUDIO_CODEX.NoPlaylists"}}</p>
+    {{/each}}
+  </div>
+</div>

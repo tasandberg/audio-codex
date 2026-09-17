@@ -1,0 +1,25 @@
+<div class="ac-toolbar">
+  {{#if this.progress}}
+  <div class="ac-progress">
+    <progress max="{{this.progress.total}}" value="{{this.progress.done}}"></progress>
+    <span>{{this.progress.label}}{{#if this.paused}} · {{localize "AUDIO_CODEX.Paused"}}{{/if}}</span>
+    {{#if this.paused}}
+    <button type="button" data-action="resume" data-tooltip="AUDIO_CODEX.Resume"><i class="fa-solid fa-play" inert></i></button>
+    {{else}}
+    <button type="button" data-action="pause" data-tooltip="AUDIO_CODEX.Pause"><i class="fa-solid fa-pause" inert></i></button>
+    {{/if}}
+    <button type="button" data-action="cancel" data-tooltip="AUDIO_CODEX.Cancel"><i class="fa-solid fa-xmark" inert></i></button>
+  </div>
+  {{else}}
+  <span class="ac-summary">{{this.summary}}</span>
+  {{#if this.stale}}
+  <span class="ac-stale"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize "AUDIO_CODEX.Stale"}}</span>
+  {{/if}}
+  {{/if}}
+  {{#if this.isGM}}
+  <button type="button" data-action="refresh" data-tooltip="AUDIO_CODEX.Refresh" {{#if this.busy}}disabled{{/if}}><i class="fa-solid fa-rotate" inert></i></button>
+  <button type="button" data-action="relink" data-tooltip="AUDIO_CODEX.Relink.Title" {{#if this.busy}}disabled{{/if}}><i class="fa-solid fa-link" inert></i></button>
+  <button type="button" data-action="rescan" data-tooltip="AUDIO_CODEX.Rescan" {{#if this.busy}}disabled{{/if}}><i class="fa-solid fa-arrows-spin" inert></i></button>
+  <button type="button" data-action="openRoots" data-tooltip="AUDIO_CODEX.Roots.Title"><i class="fa-solid fa-folder-tree" inert></i></button>
+  {{/if}}
+</div>

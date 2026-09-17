@@ -1,0 +1,91 @@
+{
+  "AUDIO_CODEX": {
+    "Title": "Audio Codex",
+    "Open": "Audio Codex",
+    "Search": "Search name, path, artist, album or title",
+    "Summary": "{count} tracks",
+    "Matches": "{count} matches",
+    "MatchesCapped": "First {count} matches",
+    "Paused": "Paused",
+    "Empty": "Nothing here yet.",
+    "Playlists": "Playlists",
+    "NoPlaylists": "No playlists yet.",
+    "Stale": "Library is out of date with its roots. Refresh to sync.",
+    "Refresh": "Sync new files",
+    "Rescan": "Full rescan: re-read every file's tags",
+    "Pause": "Pause",
+    "Resume": "Resume",
+    "Cancel": "Cancel",
+    "Column": {
+      "Title": "Title",
+      "Artist": "Artist",
+      "Album": "Album",
+      "Track": "#",
+      "Duration": "Time"
+    },
+    "Progress": {
+      "Crawl": "Scanning folders: {dirs} folders, {files} files",
+      "Tags": "Reading tags: {done} / {total}",
+      "Covers": "Extracting covers: {done} / {total}",
+      "Write": "Writing index",
+      "Upload": "Uploading: {done} / {total}"
+    },
+    "Sync": {
+      "Done": "Audio Codex synced: {tagged} new, {carried} unchanged, {covered} covers, {failed} unreadable.",
+      "Partial": "Audio Codex: some roots could not be read. Their previous contents were kept.",
+      "Cancelled": "Audio Codex sync cancelled. The previous library is unchanged.",
+      "Failed": "Audio Codex sync failed. See the console for details."
+    },
+    "Menu": {
+      "SetArtist": "Set artist for everything here",
+      "SetAlbum": "Set album for everything here",
+      "CreatePlaylist": "Create playlist",
+      "Revert": "Revert to file tags"
+    },
+    "Relink": {
+      "Title": "Relink playlists",
+      "Done": "{sounds} sounds updated, {playlists} playlists, {unmatched} unmatched.",
+      "Failed": "Relinking failed. See the console for details."
+    },
+    "Playlist": {
+      "Create": "New playlist",
+      "Rename": "Rename",
+      "SetCover": "Set cover",
+      "ClearCover": "Use library art",
+      "Delete": "Delete playlist",
+      "RemoveSound": "Remove from playlist",
+      "Failed": "That playlist action failed. See the console for details."
+    },
+    "Drop": {
+      "Added": "Added {count} tracks to {playlist}.",
+      "AddedOne": "Added 1 track to {playlist}.",
+      "NotOwner": "You do not own that playlist."
+    },
+    "Upload": {
+      "Busy": "Wait for the current sync or upload to finish.",
+      "NoTarget": "Drop the folder onto a library folder.",
+      "Unsupported": "Uploads only work for User Data and S3 roots.",
+      "NoAudio": "No audio files in that drop.",
+      "Done": "Uploaded {uploaded} files, {failed} failed.",
+      "Cancelled": "Upload cancelled. Files already uploaded appear after the next sync.",
+      "Failed": "Upload failed. See the console for details."
+    },
+    "Roots": {
+      "Title": "Audio Codex Roots",
+      "Label": "Configure Roots",
+      "Hint": "Storage folders the library indexes. Each root is a file source, an optional S3 bucket and a folder.",
+      "Name": "Name",
+      "Source": "Source",
+      "NoBucket": "No bucket",
+      "Prefix": "Folder",
+      "Browse": "Browse",
+      "Remove": "Remove",
+      "Add": "Add root",
+      "Save": "Save roots",
+      "Error": {
+        "Source": "Every root needs a file source.",
+        "Bucket": "S3 roots need a bucket."
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+<div class="ac-tree">
+  <div class="ac-row ac-head">
+    {{#each this.columns}}
+    <span class="ac-col ac-col-{{this.id}}" data-action="sortBy" data-column="{{this.id}}">{{localize this.label}}{{#if this.active}} <i class="fa-solid {{this.icon}}" inert></i>{{/if}}</span>
+    {{/each}}
+  </div>
+  <div class="ac-rows">
+    {{#each this.rows}}
+    {{#if this.folder}}
+    <div class="ac-row ac-folder" draggable="true" data-folder-id="{{this.id}}" data-root-id="{{this.rootId}}" data-key="{{this.key}}" style="--depth: {{this.depth}}">
+      <span class="ac-col ac-col-label" data-action="toggleFolder"><i class="fa-solid {{this.caret}} ac-caret" inert></i>{{#if this.album}}{{#if this.cover}}<img class="ac-art ac-art-folder" src="{{this.cover}}" loading="lazy" decoding="async" alt="" draggable="false">{{else}}<i class="fa-solid fa-compact-disc ac-art ac-art-folder ac-art-empty" inert></i>{{/if}}{{else}}<i class="fa-solid {{this.icon}} ac-folder-icon" inert></i>{{/if}}<span class="ac-lines"><span class="ac-title"><span class="ac-name">{{this.name}}</span><span class="ac-count">{{this.total}}</span></span>{{#if this.secondary}}<span class="ac-secondary">{{this.secondary}}</span>{{/if}}{{#if this.artist}}<span class="ac-artist">{{this.artist}}</span>{{/if}}</span></span>
+    </div>
+    {{else}}
+    <div class="ac-row ac-track{{#if this.overridden}} ac-overridden{{/if}}" draggable="true" data-root-id="{{this.rootId}}" data-key="{{this.key}}" style="--depth: {{this.depth}}">
+      <span class="ac-col ac-col-label" data-field="title">{{#if this.cover}}<img class="ac-art" src="{{this.cover}}" loading="lazy" decoding="async" alt="" draggable="false">{{else}}<i class="fa-solid fa-music ac-art ac-art-empty" inert></i>{{/if}}<span class="ac-name">{{this.label}}</span>{{#if this.path}}<span class="ac-path">{{this.path}}</span>{{/if}}</span>
+      <span class="ac-col ac-col-artist" data-field="artist">{{this.artist}}</span>
+      <span class="ac-col ac-col-album" data-field="album">{{this.album}}</span>
+      <span class="ac-col ac-col-track" data-field="track">{{this.track}}</span>
+      <span class="ac-col ac-col-duration">{{this.duration}}</span>
+    </div>
+    {{/if}}
+    {{else}}
+    <p class="ac-empty">{{localize "AUDIO_CODEX.Empty"}}</p>
+    {{/each}}
+  </div>
+</div>

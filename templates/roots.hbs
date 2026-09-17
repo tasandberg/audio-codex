@@ -1,0 +1,37 @@
+<section class="ac-roots">
+  <p class="hint">{{localize "AUDIO_CODEX.Roots.Hint"}}</p>
+  {{#each this.roots}}
+  <fieldset>
+    <input type="hidden" name="roots.{{@index}}.id" value="{{this.id}}">
+    <div class="form-group">
+      <label>{{localize "AUDIO_CODEX.Roots.Name"}}</label>
+      <input type="text" name="roots.{{@index}}.label" value="{{this.label}}">
+    </div>
+    <div class="form-group">
+      <label>{{localize "AUDIO_CODEX.Roots.Source"}}</label>
+      <div class="form-fields">
+        <select name="roots.{{@index}}.source">
+          {{#each this.sources}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+        <select name="roots.{{@index}}.bucket">
+          <option value="">{{localize "AUDIO_CODEX.Roots.NoBucket"}}</option>
+          {{#each this.buckets}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "AUDIO_CODEX.Roots.Prefix"}}</label>
+      <div class="form-fields">
+        <input type="text" name="roots.{{@index}}.prefix" value="{{this.prefix}}">
+        <button type="button" class="icon" data-action="browseRoot" data-index="{{@index}}" data-tooltip="AUDIO_CODEX.Roots.Browse"><i class="fa-solid fa-folder-open" inert></i></button>
+        <button type="button" class="icon" data-action="removeRoot" data-index="{{@index}}" data-tooltip="AUDIO_CODEX.Roots.Remove"><i class="fa-solid fa-trash" inert></i></button>
+      </div>
+    </div>
+  </fieldset>
+  {{/each}}
+  <button type="button" data-action="addRoot"><i class="fa-solid fa-plus" inert></i> {{localize "AUDIO_CODEX.Roots.Add"}}</button>
+</section>

@@ -1,0 +1,33 @@
+{
+  "id": "audio-codex",
+  "title": "Audio Codex",
+  "description": "An indexed, folder-tree audio library across Foundry file sources, with tags, feeding playlists by drag and drop.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Tim Sandberg",
+      "url": "https://github.com/tasandberg"
+    }
+  ],
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.367"
+  },
+  "esmodules": [
+    "dist/audio-codex.js"
+  ],
+  "styles": [
+    "dist/audio-codex.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "https://github.com/tasandberg/audio-codex",
+  "bugs": "https://github.com/tasandberg/audio-codex/issues",
+  "license": "LICENSE",
+  "readme": "README.md"
+}
