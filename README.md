@@ -36,22 +36,15 @@ Foundry VTT v14.
 
 ## Installation
 
-There are no packaged releases yet; build and install manually.
+In Foundry's **Add-on Modules → Install Module**, paste this manifest URL and click
+**Install**:
 
-1. Build the module (needs Node and pnpm):
+```
+https://github.com/tasandberg/audio-codex/releases/latest/download/module.json
+```
 
-   ```sh
-   git clone https://github.com/tasandberg/audio-codex.git
-   cd audio-codex
-   pnpm install
-   pnpm build
-   ```
-
-2. Create `Data/modules/audio-codex/` in your Foundry user data folder and copy in
-   `module.json`, `dist/`, `lang/` and `templates/`.
-3. Restart Foundry, then enable **Audio Codex** in your world's **Manage Modules**.
-
-To update, pull, rebuild and copy the same files again, then reload every open Foundry tab.
+Then enable **Audio Codex** in your world's **Manage Modules**. Reload every open Foundry tab
+after an update.
 
 ## Usage
 
@@ -87,6 +80,10 @@ pnpm typecheck
 ```
 
 Link or bind-mount the repository into your Foundry `Data/modules/audio-codex` folder.
+To release, publish a GitHub release from the UI with a new version tag (e.g. `0.2.0` or
+`v0.2.0`). The Release workflow tests and builds that tag, stamps the version into
+`module.json`, and attaches `module.json` and `module.zip` to the release. The version in the
+repository's `module.json` is not bumped.
 `scripts/make-fixtures.sh` regenerates the synthetic test audio (needs ffmpeg).
 
 ## License
