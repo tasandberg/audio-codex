@@ -28,7 +28,7 @@ function stubFoundry() {
   const stored = new Map<string, unknown>();
   const upload = vi.fn(async () => ({ path: "worlds/w/audio-codex/index.json" }));
   vi.stubGlobal("game", {
-    user: { isGM: true },
+    user: { isGM: true, role: 4 },
     world: { id: "w" },
     i18n: { localize: (key: string) => key, format: (key: string) => key },
     settings: {

@@ -70,6 +70,17 @@
       "Cancelled": "Upload cancelled. Files already uploaded appear after the next sync.",
       "Failed": "Upload failed. See the console for details."
     },
+    "Permission": {
+      "MinimumRole": "Minimum role",
+      "MinimumRoleHint": "Lowest role allowed to use Audio Codex. Users below it get no library UI and load no index.",
+      "Denied": "You do not have permission to use Audio Codex.",
+      "Role": {
+        "Player": "Player",
+        "Trusted": "Trusted Player",
+        "Assistant": "Assistant Gamemaster",
+        "Gamemaster": "Gamemaster"
+      }
+    },
     "Roots": {
       "Title": "Audio Codex Roots",
       "Label": "Configure Roots",

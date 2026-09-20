@@ -5,7 +5,13 @@ import { MODULE_ID } from "./constants";
 import { decoratePlaylistDirectory } from "./foundry/sidebar-art";
 import { coverChanged, playlistCover, soundCover } from "./playlist/cover-resolve";
 import { service } from "./service";
-import { registerSettings } from "./settings";
+import { registerSettings, userCanUseCodex } from "./settings";
+
+const onPermissionChanged = (): void => {
+  if (userCanUseCodex()) void service.ensureLoaded();
+  else LibraryApp.closeIfOpen();
+  void ui.playlists?.render({ parts: ["directory", "playing"] });
+};
 
 Hooks.once("init", () => {
   registerSettings(
@@ -13,6 +19,7 @@ Hooks.once("init", () => {
       roots: () => service.rebuild(),
       overrides: () => service.rebuild(),
       pointer: () => service.onPointerChanged(),
+      minimumRole: () => onPermissionChanged(),
     },
     RootsMenu,
   );
@@ -27,7 +34,7 @@ Hooks.once("ready", () => {
     rendered = service.library;
     void ui.playlists?.render({ parts: ["directory", "playing"] });
   });
-  void service.ensureLoaded();
+  if (userCanUseCodex()) void service.ensureLoaded();
 });
 
 const coverFor = (playlistId: string, soundId: string | null): string | null => {
@@ -42,13 +49,13 @@ Hooks.on("updatePlaylist", (_playlist, changes) => {
 });
 
 Hooks.on("renderPlaylistDirectory", (_app, element) => {
-  const actions = element.querySelector(".header-actions");
+  const actions = userCanUseCodex() ? element.querySelector(".header-actions") : null;
   if (actions && !actions.querySelector(".audio-codex-open")) {
     const button = document.createElement("button");
     button.type = "button";
     button.classList.add("audio-codex-open");
     button.innerHTML = `<i class="fa-solid fa-book-open" inert></i> ${game.i18n.localize("AUDIO_CODEX.Open")}`;
-    button.addEventListener("click", () => LibraryApp.open());
+    button.addEventListener("click", () => void LibraryApp.open());
     actions.append(button);
   }
   decoratePlaylistDirectory(element, coverFor);

@@ -7,6 +7,7 @@ import { createPlaylistFromFolder, dropOnPlaylist, relinkPlaylists } from "../pl
 import { DRAG_TYPE, type DragPayload, type Point, dropPoint, dropTargetAt } from "../playlist/playlist-drop";
 import { canManage, cleanName, deletePlaylist, removeSound, renamePlaylist, setPlaylistCover } from "../playlist/playlist-manage";
 import { service } from "../service";
+import { userCanUseCodex } from "../settings";
 import { FileLocation } from "../storage/file-location";
 import { SyncCancelled, SyncControl } from "../sync/control";
 import type { EditableField } from "../types";
@@ -68,10 +69,18 @@ export class LibraryApp extends HandlebarsApplicationMixin(ApplicationV2)<Librar
 
   static #instance: LibraryApp | null = null;
 
-  static open(): LibraryApp {
+  static open(): LibraryApp | null {
+    if (!userCanUseCodex()) {
+      ui.notifications?.warn(localize("AUDIO_CODEX.Permission.Denied"));
+      return null;
+    }
     LibraryApp.#instance ??= new LibraryApp();
     void LibraryApp.#instance.render({ force: true });
     return LibraryApp.#instance;
+  }
+
+  static closeIfOpen(): void {
+    void LibraryApp.#instance?.close();
   }
 
   #expanded = new Set<string>();

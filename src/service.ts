@@ -6,7 +6,7 @@ import { countFiles } from "./index/tree";
 import { Library } from "./library/library";
 import { type OverrideEdit, withOverrides, withoutOverride } from "./library/overrides";
 import { rootFingerprint } from "./roots/roots";
-import { getOverrides, getPointer, getRoots, setOverrides, setPointer } from "./settings";
+import { getOverrides, getPointer, getRoots, setOverrides, setPointer, userCanUseCodex } from "./settings";
 import { FileLocation } from "./storage/file-location";
 import { blobSource, httpSource } from "./sync/byte-source";
 import { SyncCancelled, SyncControl } from "./sync/control";
@@ -81,7 +81,7 @@ export class LibraryService {
   }
 
   async sync(force = false): Promise<SyncOutcome | null> {
-    if (!game.user.isGM || this.control) return null;
+    if (!game.user.isGM || !userCanUseCodex() || this.control) return null;
     const control = new SyncControl();
     this.control = control;
     this.#emit();
