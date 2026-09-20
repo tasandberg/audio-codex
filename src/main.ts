@@ -1,6 +1,6 @@
 import "./styles/audio-codex.css";
 import { LibraryApp } from "./app/library-app";
-import { RootsMenu } from "./app/roots-app";
+import { RootsApp, RootsMenu } from "./app/roots-app";
 import { MODULE_ID } from "./constants";
 import { decoratePlaylistDirectory } from "./foundry/sidebar-art";
 import { coverChanged, playlistCover, soundCover } from "./playlist/cover-resolve";
@@ -8,9 +8,14 @@ import { service } from "./service";
 import { registerSettings, userCanUseCodex } from "./settings";
 
 const onPermissionChanged = (): void => {
-  if (userCanUseCodex()) void service.ensureLoaded();
-  else LibraryApp.closeIfOpen();
-  void ui.playlists?.render({ parts: ["directory", "playing"] });
+  if (userCanUseCodex()) {
+    void service.ensureLoaded();
+  } else {
+    LibraryApp.closeIfOpen();
+    RootsApp.closeIfOpen();
+    service.revoke();
+  }
+  void ui.playlists?.render({ parts: ["header", "directory", "playing"] });
 };
 
 Hooks.once("init", () => {

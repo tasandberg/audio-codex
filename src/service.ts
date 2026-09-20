@@ -51,11 +51,13 @@ export class LibraryService {
   }
 
   ensureLoaded(): Promise<void> {
+    if (!userCanUseCodex()) return Promise.resolve();
     this.#loading ??= this.load();
     return this.#loading;
   }
 
   async load(): Promise<void> {
+    if (!userCanUseCodex()) return;
     try {
       this.index = await readIndex(getPointer());
     } catch (error) {
@@ -74,8 +76,15 @@ export class LibraryService {
     if (getPointer().generatedAt !== this.index?.generatedAt) void this.load();
   }
 
+  revoke(): void {
+    this.control?.cancel();
+    this.#loading = null;
+    this.index = null;
+    this.rebuild();
+  }
+
   async autoSync(): Promise<void> {
-    if (!game.user.isGM || this.#autoSynced) return;
+    if (!game.user.isGM || !userCanUseCodex() || this.#autoSynced) return;
     this.#autoSynced = true;
     await this.sync();
   }
@@ -130,17 +139,19 @@ export class LibraryService {
   }
 
   async edit(edits: OverrideEdit[]): Promise<void> {
+    if (!userCanUseCodex()) return;
     await this.ensureLoaded();
     await setOverrides(withOverrides(getOverrides(), edits));
   }
 
   async revert(rootId: string, key: string): Promise<void> {
+    if (!userCanUseCodex()) return;
     await this.ensureLoaded();
     await setOverrides(withoutOverride(getOverrides(), rootId, key));
   }
 
   async splice(root: Root, uploaded: UploadedFile[], control: SyncControl): Promise<void> {
-    if (!uploaded.length) return;
+    if (!userCanUseCodex() || !uploaded.length) return;
     await this.ensureLoaded();
     const covers: string[] = [];
     const audio: UploadedFile[] = [];

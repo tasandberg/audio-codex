@@ -2,7 +2,7 @@ import type { DeepPartial } from "fvtt-types/utils";
 import { MODULE_ID } from "../constants";
 import { localize } from "../foundry/i18n";
 import { type RootInput, normalizeRoot, rootLocation, validateRoot } from "../roots/roots";
-import { getRoots, setRoots } from "../settings";
+import { getRoots, setRoots, userCanUseCodex } from "../settings";
 import { FileLocation } from "../storage/file-location";
 import type { Root } from "../types";
 
@@ -58,10 +58,18 @@ export class RootsApp extends HandlebarsApplicationMixin(ApplicationV2)<RootsCon
 
   static #instance: RootsApp | null = null;
 
-  static open(): RootsApp {
+  static open(): RootsApp | null {
+    if (!userCanUseCodex()) {
+      ui.notifications?.warn(localize("AUDIO_CODEX.Permission.Denied"));
+      return null;
+    }
     RootsApp.#instance ??= new RootsApp();
     void RootsApp.#instance.render({ force: true });
     return RootsApp.#instance;
+  }
+
+  static closeIfOpen(): void {
+    void RootsApp.#instance?.close();
   }
 
   #draft: Root[] = getRoots();

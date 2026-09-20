@@ -72,7 +72,7 @@
     },
     "Permission": {
       "MinimumRole": "Minimum role",
-      "MinimumRoleHint": "Lowest role allowed to use Audio Codex. Users below it get no library UI and load no index.",
+      "MinimumRoleHint": "Lowest role allowed to use Audio Codex. Users below it get no library UI and load no index. Anyone who can edit settings can raise their own access, so this only binds roles below that.",
       "Denied": "You do not have permission to use Audio Codex.",
       "Role": {
         "Player": "Player",

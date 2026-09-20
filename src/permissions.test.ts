@@ -16,12 +16,20 @@ describe("minimum role choices", () => {
 });
 
 describe("canUseCodex", () => {
-  it("grants access at or above the threshold", () => {
-    for (const minimum of ROLES) {
-      for (const role of ROLES) {
-        expect(canUseCodex(role, minimum)).toBe(role >= minimum);
-      }
-    }
+  const GRANTS: Record<number, [boolean, boolean, boolean, boolean]> = {
+    [ROLE.PLAYER]: [true, true, true, true],
+    [ROLE.TRUSTED]: [false, true, true, true],
+    [ROLE.ASSISTANT]: [false, false, true, true],
+    [ROLE.GAMEMASTER]: [false, false, false, true],
+  };
+
+  it.each(ROLES)("threshold %i admits exactly the roles at or above it", (minimum) => {
+    expect(ROLES.map((role) => canUseCodex(role, minimum))).toEqual(GRANTS[minimum]);
+  });
+
+  it("denies a Player under a Trusted threshold and admits a Trusted", () => {
+    expect(canUseCodex(ROLE.PLAYER, ROLE.TRUSTED)).toBe(false);
+    expect(canUseCodex(ROLE.TRUSTED, ROLE.TRUSTED)).toBe(true);
   });
 
   it("never grants access to the NONE role", () => {
