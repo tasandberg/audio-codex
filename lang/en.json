@@ -71,14 +71,14 @@
       "Failed": "Upload failed. See the console for details."
     },
     "Permission": {
-      "MinimumRole": "Minimum role",
-      "MinimumRoleHint": "Lowest role allowed to use Audio Codex. Users below it get no library UI and load no index. Anyone who can edit settings can raise their own access, so this only binds roles below that.",
+      "MinimumRole": "Who can use Audio Codex",
+      "MinimumRoleHint": "Everyone below this scope gets no library button and loads no index. Only Gamemasters can change this setting, enforced in the client; for server-enforced lockdown set Configure Permissions → Modify Configuration Settings to Gamemaster.",
       "Denied": "You do not have permission to use Audio Codex.",
       "Role": {
-        "Player": "Player",
-        "Trusted": "Trusted Player",
-        "Assistant": "Assistant Gamemaster",
-        "Gamemaster": "Gamemaster"
+        "Player": "Everyone",
+        "Trusted": "Trusted Players and up",
+        "Assistant": "Assistant Gamemasters and up",
+        "Gamemaster": "Gamemasters only"
       }
     },
     "Roots": {

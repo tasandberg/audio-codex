@@ -22,3 +22,19 @@ export function canUseCodex(role: number, minimumRole: number): boolean {
   if (role === ROLE.GAMEMASTER) return true;
   return role >= normalizeMinimumRole(minimumRole);
 }
+
+export function minimumRoleToMaterialize(role: number, exists: boolean, current: unknown): number | null {
+  if (exists || role !== ROLE.GAMEMASTER) return null;
+  return normalizeMinimumRole(current);
+}
+
+export function claimGamemasterOnlyKey(keys: unknown, key: string): boolean {
+  if (!Array.isArray(keys) || !keys.every((entry) => typeof entry === "string")) return false;
+  if (keys.includes(key)) return true;
+  try {
+    keys.push(key);
+  } catch {
+    return false;
+  }
+  return keys.includes(key);
+}

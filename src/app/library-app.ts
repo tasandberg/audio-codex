@@ -502,7 +502,10 @@ export class LibraryApp extends HandlebarsApplicationMixin(ApplicationV2)<Librar
   #onDoubleClick(event: MouseEvent): void {
     const element = event.target as HTMLElement;
     const cell = element.closest<HTMLElement>(".ac-track [data-field]");
-    if (cell) return this.#editCell(cell);
+    if (cell) {
+      this.#editCell(cell);
+      return;
+    }
     const head = element.closest<HTMLElement>(".ac-playlist-head");
     if (head && canManage(this.#playlistAt(head))) void this.#renamePlaylist(head);
   }

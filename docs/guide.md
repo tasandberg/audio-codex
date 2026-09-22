@@ -8,14 +8,15 @@
 - [Playlists](#playlists)
 - [Cover art](#cover-art)
 - [Uploading](#uploading)
-- [GM and players](#gm-and-players)
+- [Access, GMs and players](#access-gms-and-players)
 - [Troubleshooting](#troubleshooting)
 
 ## Opening the library
 
 Open the **Playlists** sidebar tab and click **Audio Codex** in its header. The window has
 four areas: a search box, a toolbar, the **Playlists** panel on the left and the library
-tree on the right.
+tree on the right. The button only appears for users the access setting admits, which by
+default is Gamemasters only — see [Access, GMs and players](#access-gms-and-players).
 
 ## Library roots
 
@@ -179,18 +180,43 @@ The new tracks appear straight away, and cover extraction runs for the folders y
 Files uploaded before a cancel appear after the next sync. You cannot upload while a sync
 is running.
 
-## GM and players
+## Access, GMs and players
+
+**Configure Settings → Audio Codex → Who can use Audio Codex** sets the lowest role that
+gets the module. The four scopes are cumulative:
+
+- **Gamemasters only** — the default
+- **Assistant Gamemasters and up**
+- **Trusted Players and up**
+- **Everyone**
+
+Below the chosen scope there is no Audio Codex at all: no **Audio Codex** button in the
+Playlists sidebar header, no library window, and no index request — not an empty library.
+Changing the scope takes effect on every connected client straight away, closing the window
+for anyone who just lost access. Cover art already stored on a playlist or sound stays
+visible in the sidebar, because that art is a flag on the document rather than something the
+library serves.
+
+Only a Gamemaster can change this setting. That is enforced in the client, which covers the
+settings UI and `game.settings.set()` from the console on every client. It is not enforced
+by the server: Foundry's own **Modify Configuration Settings** permission still allows
+Assistants by default, so a user who crafts their own socket message can get past it. For
+lockdown the server enforces, set **Configure Settings → Configure Permissions → Modify
+Configuration Settings** to Gamemaster.
+
+Inside the chosen scope, what a user can do still depends on their role. *GM* below means
+Assistant Gamemaster or Gamemaster:
 
 | | GM | Player |
 |---|---|---|
 | Browse and search the library | yes | yes |
+| See cover art in the library and sidebar | yes | yes |
 | Sync, rescan, relink, configure roots | yes | no |
 | Edit tags, upload | yes | no |
 | Create playlists | yes | if allowed to create playlists |
 | Drop onto, rename, set cover, remove sounds, delete | playlists they own | playlists they own |
 
-Players load the index over plain HTTP and need no file-browse permission. They see the
-cover art in the library and the sidebar.
+Permitted players load the index over plain HTTP and need no file-browse permission.
 
 ## Troubleshooting
 
@@ -199,6 +225,9 @@ new code.
 
 **The library is empty.** Check that roots are configured, then click **Sync new files** as
 GM. Players see nothing until a GM has synced.
+
+**A player has no Audio Codex button.** They are below the access scope. Raise **Configure
+Settings → Audio Codex → Who can use Audio Codex**; it defaults to Gamemasters only.
 
 **Many S3 files are reported unreadable.** The bucket is missing CORS for your origin or the
 `Range` header, or the objects are not publicly readable (HTTP 403). The browser console

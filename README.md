@@ -29,6 +29,8 @@ something you can browse, search and reuse.
   re-reads everything.
 - **Relink playlists** refreshes cover art on existing playlists and their sounds from the
   library.
+- **Access scope**: pick the lowest role that gets the library at all. Gamemasters only by
+  default; everyone below the scope loads no index.
 
 Audio Codex never deletes, moves or renames stored files; Foundry's file API cannot.
 It does not play audio itself; playback stays with core playlists.
@@ -59,9 +61,13 @@ See the [user guide](docs/guide.md) for everything below in detail.
 3. As GM, click **Sync new files**. The first sync reads every file's tags; later syncs only
    read new ones.
 4. Drag tracks or folders onto a playlist.
+5. To let players in, raise **Configure Settings → Audio Codex → Who can use Audio Codex**.
+   It defaults to Gamemasters only, so until you change it players get no sidebar button and
+   no library.
 
-The index is a gzipped JSON file in User Data. Players load it over plain HTTP, so they see
-the library read-only without any file-browse permission.
+The index is a gzipped JSON file in User Data. Players the access setting admits load it over
+plain HTTP, so they see the library read-only without any file-browse permission. Everyone
+below that scope never requests it.
 
 ## S3 notes
 

@@ -1,8 +1,53 @@
 import { MODULE_ID } from "./constants";
-import { DEFAULT_MINIMUM_ROLE, MINIMUM_ROLE_CHOICES, canUseCodex, normalizeMinimumRole } from "./permissions";
+import {
+  DEFAULT_MINIMUM_ROLE,
+  MINIMUM_ROLE_CHOICES,
+  canUseCodex,
+  claimGamemasterOnlyKey,
+  minimumRoleToMaterialize,
+  normalizeMinimumRole,
+} from "./permissions";
 import type { Overrides, Pointer, Root } from "./types";
 
 export const EMPTY_POINTER: Pointer = { version: 0, generatedAt: 0, rootFingerprint: "", fileCount: 0, cacheFile: "", partial: [] };
+
+const MINIMUM_ROLE_KEY = `${MODULE_ID}.minimumRole`;
+
+interface GamemasterOnlyKeyList {
+  readonly _GAMEMASTER_ONLY_KEYS?: unknown;
+}
+
+function gamemasterOnlyKeyList(): unknown {
+  try {
+    return (foundry.documents?.BaseSetting as unknown as GamemasterOnlyKeyList | undefined)?._GAMEMASTER_ONLY_KEYS;
+  } catch {
+    return undefined;
+  }
+}
+
+export const restrictMinimumRoleToGamemasters = (): boolean => claimGamemasterOnlyKey(gamemasterOnlyKeyList(), MINIMUM_ROLE_KEY);
+
+interface WorldSettingLookup {
+  getSetting?: (key: string) => unknown;
+}
+
+function minimumRoleSettingExists(): boolean {
+  try {
+    const world = game.settings.storage.get("world") as unknown as WorldSettingLookup | undefined;
+    return Boolean(world?.getSetting?.(MINIMUM_ROLE_KEY));
+  } catch {
+    return true;
+  }
+}
+
+export async function materializeMinimumRole(): Promise<void> {
+  try {
+    const value = minimumRoleToMaterialize(game.user.role, minimumRoleSettingExists(), game.settings.get(MODULE_ID, "minimumRole"));
+    if (value !== null) await game.settings.set(MODULE_ID, "minimumRole", value);
+  } catch (error) {
+    console.warn(`${MODULE_ID} | cannot materialize the access setting`, error);
+  }
+}
 
 export interface SettingListeners {
   roots(): void;
@@ -43,6 +88,7 @@ export function registerSettings(listeners: SettingListeners, rootsMenu: new () 
     default: DEFAULT_MINIMUM_ROLE,
     onChange: () => listeners.minimumRole(),
   });
+  restrictMinimumRoleToGamemasters();
   game.settings.registerMenu(MODULE_ID, "rootsMenu", {
     name: "AUDIO_CODEX.Roots.Title",
     label: "AUDIO_CODEX.Roots.Label",
