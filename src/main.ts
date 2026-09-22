@@ -5,7 +5,7 @@ import { MODULE_ID } from "./constants";
 import { decoratePlaylistDirectory } from "./foundry/sidebar-art";
 import { coverChanged, playlistCover, soundCover } from "./playlist/cover-resolve";
 import { service } from "./service";
-import { registerSettings, userCanUseCodex } from "./settings";
+import { materializeMinimumRole, registerSettings, userCanUseCodex } from "./settings";
 
 const onPermissionChanged = (): void => {
   if (userCanUseCodex()) {
@@ -31,6 +31,7 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", () => {
+  void materializeMinimumRole();
   const module = game.modules.get(MODULE_ID);
   if (module) Object.assign(module, { api: { open: () => LibraryApp.open(), sync: (force = false) => service.sync(force), service } });
   let rendered = service.library;
