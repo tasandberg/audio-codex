@@ -15,5 +15,6 @@ declare module "fvtt-types/configuration" {
     "audio-codex.roots": Root[];
     "audio-codex.overrides": Overrides;
     "audio-codex.pointer": Pointer;
+    "audio-codex.minimumRole": number;
   }
 }

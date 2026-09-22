@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { encodeIndex } from "./index/index-store";
 import { LibraryService } from "./service";
 import { FileLocation } from "./storage/file-location";
 import { SyncCancelled, SyncControl } from "./sync/control";
@@ -24,11 +25,12 @@ vi.mock("./sync/tag-reader", async (importOriginal) => {
   return { ...actual, readTags: async () => ({ album: "LP" }) };
 });
 
-function stubFoundry() {
-  const stored = new Map<string, unknown>();
+function stubFoundry(options: { role?: number; settings?: Record<string, unknown> } = {}) {
+  const role = options.role ?? 4;
+  const stored = new Map<string, unknown>(Object.entries(options.settings ?? {}));
   const upload = vi.fn(async () => ({ path: "worlds/w/audio-codex/index.json" }));
   vi.stubGlobal("game", {
-    user: { isGM: true },
+    user: { isGM: role >= 3, role },
     world: { id: "w" },
     i18n: { localize: (key: string) => key, format: (key: string) => key },
     settings: {
@@ -44,7 +46,7 @@ function stubFoundry() {
     },
   });
   vi.stubGlobal("ui", { notifications: { info: vi.fn(), warn: vi.fn(), error: vi.fn() } });
-  return { upload };
+  return { upload, stored };
 }
 
 describe("LibraryService.sync", () => {
@@ -84,5 +86,75 @@ describe("LibraryService.splice", () => {
     expect(captured.onProgress).toBeTypeOf("function");
     captured.onProgress?.(3, 7);
     expect(service.progress).toBeNull();
+  });
+});
+
+describe("LibraryService access control", () => {
+  const POINTER = { version: 2, generatedAt: 7, rootFingerprint: "f", fileCount: 0, cacheFile: "worlds/w/audio-codex/index.json", partial: [] };
+
+  async function stubIndexFetch() {
+    const bytes = await encodeIndex({ version: 2, generatedAt: 7, roots: [] });
+    const fetchMock = vi.fn(async () => new Response(new Blob([bytes as Uint8Array<ArrayBuffer>])));
+    vi.stubGlobal("fetch", fetchMock);
+    return fetchMock;
+  }
+
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("never fetches or parses the index for an unpermitted client", async () => {
+    const fetchMock = await stubIndexFetch();
+    stubFoundry({ role: 1, settings: { pointer: POINTER } });
+    const service = new LibraryService();
+    await service.ensureLoaded();
+    await service.load();
+    service.onPointerChanged();
+    await Promise.resolve();
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(service.index).toBeNull();
+  });
+
+  it("fetches the index once the threshold admits the client", async () => {
+    const fetchMock = await stubIndexFetch();
+    stubFoundry({ role: 1, settings: { pointer: POINTER, minimumRole: 1 } });
+    const service = new LibraryService();
+    await service.ensureLoaded();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(service.index?.generatedAt).toBe(7);
+  });
+
+  it("refuses to sync or write overrides for an unpermitted assistant", async () => {
+    const { upload, stored } = stubFoundry({ role: 3, settings: { pointer: POINTER } });
+    await stubIndexFetch();
+    const service = new LibraryService();
+    expect(game.user.isGM).toBe(true);
+    expect(await service.sync()).toBeNull();
+    await service.edit([{ rootId: "r1", key: "a.mp3", fields: { artist: "x" } }]);
+    await service.revert("r1", "a.mp3");
+    expect(upload).not.toHaveBeenCalled();
+    expect(stored.get("overrides")).toBeUndefined();
+  });
+
+  it("leaves the auto-sync latch unspent when permission is denied", async () => {
+    const { upload, stored } = stubFoundry({ role: 3 });
+    const service = new LibraryService();
+    await service.autoSync();
+    expect(upload).not.toHaveBeenCalled();
+    stored.set("minimumRole", 3);
+    await service.autoSync();
+    expect(upload).toHaveBeenCalledTimes(1);
+  });
+
+  it("cancels an in-flight sync and drops the loaded library when revoked", async () => {
+    await stubIndexFetch();
+    const { upload } = stubFoundry({ settings: { pointer: POINTER } });
+    const service = new LibraryService();
+    await service.ensureLoaded();
+    expect(service.index).not.toBeNull();
+    const running = service.sync();
+    service.revoke();
+    expect(await running).toBeNull();
+    expect(upload).not.toHaveBeenCalled();
+    expect(service.index).toBeNull();
+    expect(service.library.size).toBe(0);
   });
 });
