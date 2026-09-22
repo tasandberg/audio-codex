@@ -1,5 +1,5 @@
-import { execSync } from "child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { execSync } from "node:child_process";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 
 const [version, tagArg] = process.argv.slice(2);
 if (!/^\d+\.\d+\.\d+$/.test(version ?? "")) {
@@ -12,7 +12,7 @@ const manifest = JSON.parse(readFileSync("./module.json", "utf8"));
 manifest.version = version;
 manifest.manifest = `${manifest.url}/releases/latest/download/module.json`;
 manifest.download = `${manifest.url}/releases/download/${tag}/module.zip`;
-writeFileSync("./module.json", JSON.stringify(manifest, null, 2) + "\n");
+writeFileSync("./module.json", `${JSON.stringify(manifest, null, 2)}\n`);
 console.log(`Stamped module.json ${version} (download → ${manifest.download})`);
 
 mkdirSync("build", { recursive: true });

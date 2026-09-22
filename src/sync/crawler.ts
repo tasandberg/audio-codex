@@ -1,7 +1,7 @@
 import { MODULE_ID, NOSCAN_FILE, chooseCover, isAudioFile } from "../constants";
 import { emptyDir, sortTree } from "../index/tree";
 import { rootLocation } from "../roots/roots";
-import { FileLocation, decode } from "../storage/file-location";
+import { type FileLocation, decode } from "../storage/file-location";
 import type { IndexedDir, Root } from "../types";
 import { SyncCancelled, type SyncControl } from "./control";
 import { runQueue } from "./queue";
