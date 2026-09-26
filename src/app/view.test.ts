@@ -49,14 +49,14 @@ describe("view models", () => {
 
   it("lists playlists flat, expanding only the open ones", () => {
     const sources: PlaylistSource[] = [
-      { id: "p1", name: "Tavern", cover: "https://cdn/tavern.jpg", count: 2, sounds: [{ id: "s1", name: "Lute", cover: null }, { id: "s2", name: "Drum", cover: "https://cdn/drum.png" }] },
+      { id: "p1", name: "Tavern", cover: "https://cdn/tavern.jpg", count: 2, sounds: [{ id: "s1", name: "Lute", cover: null, channel: "music" }, { id: "s2", name: "Drum", cover: "https://cdn/drum.png", channel: "environment" }] },
       { id: "p2", name: "Battle", cover: null, count: 7, sounds: [] },
     ];
     const views = playlistViews(sources, new Set(["p1"]));
     expect(views[0]).toMatchObject({ id: "p1", name: "Tavern", count: 2, cover: "https://cdn/tavern.jpg", expanded: true });
     expect(views[0].sounds).toEqual([
-      { id: "s1", name: "Lute", cover: "" },
-      { id: "s2", name: "Drum", cover: "https://cdn/drum.png" },
+      { id: "s1", name: "Lute", cover: "", channel: "music", channelIcon: "fa-music", channelLabel: "AUDIO_CODEX.Channel.Music" },
+      { id: "s2", name: "Drum", cover: "https://cdn/drum.png", channel: "environment", channelIcon: "fa-tree", channelLabel: "AUDIO_CODEX.Channel.Environment" },
     ]);
     expect(views[1]).toMatchObject({ id: "p2", count: 7, cover: "", expanded: false, sounds: [] });
   });

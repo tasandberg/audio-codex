@@ -2,6 +2,7 @@ import { MODULE_ID } from "../constants";
 import type { PlaylistSource } from "../app/view";
 import type { IndexWriter } from "../index/index-store";
 import { type CoverLibrary, audibleSounds, playlistCover, soundCover } from "../playlist/cover-resolve";
+import { effectiveChannel } from "../playlist/sound-channel";
 import type { FileLocation } from "../storage/file-location";
 import type { Browse } from "../sync/crawler";
 import type { UploadDeps } from "../upload/uploader";
@@ -57,7 +58,7 @@ export const playlistSources = (expanded: ReadonlySet<string>, library: CoverLib
         name: playlist.name,
         cover: playlistCover(playlist, library),
         count: sounds.length,
-        sounds: expanded.has(playlist.id) ? sounds.map((sound) => ({ id: sound.id, name: sound.name, cover: soundCover(sound, playlist, library) })) : [],
+        sounds: expanded.has(playlist.id) ? sounds.map((sound) => ({ id: sound.id, name: sound.name, cover: soundCover(sound, playlist, library), channel: effectiveChannel(sound, playlist) })) : [],
       };
     });
 

@@ -56,6 +56,11 @@
       "RemoveSound": "Remove from playlist",
       "Failed": "That playlist action failed. See the console for details."
     },
+    "Channel": {
+      "Music": "Plays on the Music channel",
+      "Environment": "Plays on the Environment channel",
+      "Interface": "Plays on the Interface channel"
+    },
     "Drop": {
       "Added": "Added {count} tracks to {playlist}.",
       "AddedOne": "Added 1 track to {playlist}.",
