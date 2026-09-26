@@ -1,5 +1,6 @@
 export const MODULE_ID = "audio-codex";
 export const COVER_FLAG = "cover";
+export const TOGGLE_FLAG = "toggle";
 export const INDEX_VERSION = 2;
 export const SUPPORTED_INDEX_VERSIONS: readonly number[] = [1, 2];
 export const INDEX_FILE = "index.json";

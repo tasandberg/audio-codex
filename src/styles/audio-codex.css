@@ -322,3 +322,22 @@ img.ac-sidebar-now-art {
   border-radius: 3px;
   margin-bottom: 4px;
 }
+
+#hotbar .slot.ac-hotbar-playing {
+  box-shadow:
+    0 0 0 2px var(--color-warm-2, #ff6400) inset,
+    0 0 8px var(--color-warm-2, #ff6400);
+}
+
+#hotbar .slot.ac-hotbar-playing::after {
+  content: "\f001";
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  font-family: var(--font-awesome, "Font Awesome 6 Pro");
+  font-weight: 900;
+  font-size: 0.625rem;
+  color: var(--color-warm-2, #ff6400);
+  text-shadow: 0 0 3px #000;
+  pointer-events: none;
+}

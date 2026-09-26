@@ -61,6 +61,10 @@
       "AddedOne": "Added 1 track to {playlist}.",
       "NotOwner": "You do not own that playlist."
     },
+    "Macro": {
+      "Missing": "That sound or playlist no longer exists.",
+      "NotOwner": "You do not own that sound or playlist."
+    },
     "Upload": {
       "Busy": "Wait for the current sync or upload to finish.",
       "NoTarget": "Drop the folder onto a library folder.",
