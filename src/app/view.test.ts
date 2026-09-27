@@ -56,7 +56,7 @@ describe("view models", () => {
     expect(views[0]).toMatchObject({ id: "p1", name: "Tavern", count: 2, cover: "https://cdn/tavern.jpg", expanded: true });
     expect(views[0].sounds).toEqual([
       { id: "s1", name: "Lute", cover: "", channel: "music", channelIcon: "fa-music", channelLabel: "AUDIO_CODEX.Channel.Music" },
-      { id: "s2", name: "Drum", cover: "https://cdn/drum.png", channel: "environment", channelIcon: "fa-tree", channelLabel: "AUDIO_CODEX.Channel.Environment" },
+      { id: "s2", name: "Drum", cover: "https://cdn/drum.png", channel: "environment", channelIcon: "fa-mountain", channelLabel: "AUDIO_CODEX.Channel.Environment" },
     ]);
     expect(views[1]).toMatchObject({ id: "p2", count: 7, cover: "", expanded: false, sounds: [] });
   });

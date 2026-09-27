@@ -6,7 +6,7 @@ export interface ChannelSource {
 
 const CHANNEL_ICONS: Readonly<Record<AudioChannel, string>> = {
   music: "fa-music",
-  environment: "fa-tree",
+  environment: "fa-mountain",
   interface: "fa-bell",
 };
 

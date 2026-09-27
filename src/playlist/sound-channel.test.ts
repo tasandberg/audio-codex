@@ -27,7 +27,7 @@ describe("effectiveChannel", () => {
 describe("channel presentation", () => {
   it("maps each channel to a distinct Font Awesome icon", () => {
     expect(channelIcon("music")).toBe("fa-music");
-    expect(channelIcon("environment")).toBe("fa-tree");
+    expect(channelIcon("environment")).toBe("fa-mountain");
     expect(channelIcon("interface")).toBe("fa-bell");
   });
 

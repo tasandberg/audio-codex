@@ -41,7 +41,7 @@ describe("decorateSoundChannels", () => {
     decorateSoundChannels(root, channelFor, localize);
     const icon = iconOf("s2")!;
     expect(icon).not.toBeNull();
-    expect(icon.classList.contains("fa-tree")).toBe(true);
+    expect(icon.classList.contains("fa-mountain")).toBe(true);
     expect(icon.dataset.channel).toBe("environment");
     expect(icon.dataset.tooltip).toBe("L:AUDIO_CODEX.Channel.Environment");
     expect(icon.getAttribute("aria-label")).toBe("L:AUDIO_CODEX.Channel.Environment");
