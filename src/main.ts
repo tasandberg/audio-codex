@@ -34,7 +34,7 @@ Hooks.once("init", () => {
 Hooks.once("ready", () => {
   void materializeMinimumRole();
   const module = game.modules.get(MODULE_ID);
-  if (module) Object.assign(module, { api: { open: () => LibraryApp.open(), sync: (force = false) => service.sync(force), toggle: toggleByUuid, service } });
+  if (module) Object.assign(module, { api: { open: () => LibraryApp.open(), sync: (force = false) => service.sync(force), togglePlayback: toggleByUuid, service } });
   let rendered = service.library;
   service.subscribe(() => {
     if (service.library === rendered) return;

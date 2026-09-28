@@ -40,7 +40,7 @@ describe("macroSource", () => {
   it("builds a flagged script macro calling the module toggle", () => {
     const source = macroSource("Tavern", "Playlist.p1", "art/cover.png");
     expect(source).toMatchObject({ name: "Tavern", type: "script", img: "art/cover.png", flags: { [MODULE_ID]: { [TOGGLE_FLAG]: "Playlist.p1" } } });
-    expect(source.command).toBe('await game.modules.get("audio-codex")?.api?.toggle("Playlist.p1");');
+    expect(source.command).toBe('await game.modules.get("audio-codex")?.api?.togglePlayback("Playlist.p1");');
   });
 
   it("falls back to a sound icon without art", () => {
@@ -49,7 +49,7 @@ describe("macroSource", () => {
   });
 
   it("escapes the uuid inside the command", () => {
-    expect(macroSource("x", 'a"b', null).command).toContain('toggle("a\\"b")');
+    expect(macroSource("x", 'a"b', null).command).toContain('togglePlayback("a\\"b")');
   });
 });
 

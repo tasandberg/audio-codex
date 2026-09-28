@@ -55,7 +55,7 @@ export function toggleTarget(data: unknown): ToggleTarget | null {
 }
 
 export function toggleCommand(uuid: string): string {
-  return `await game.modules.get(${JSON.stringify(MODULE_ID)})?.api?.toggle(${JSON.stringify(uuid)});`;
+  return `await game.modules.get(${JSON.stringify(MODULE_ID)})?.api?.togglePlayback(${JSON.stringify(uuid)});`;
 }
 
 export function macroSource(name: string, uuid: string, img: string | null | undefined): MacroSource {
