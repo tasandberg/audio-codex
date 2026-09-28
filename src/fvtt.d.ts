@@ -1,4 +1,4 @@
-import type { COVER_FLAG } from "./constants";
+import type { COVER_FLAG, TOGGLE_FLAG } from "./constants";
 import type { Overrides, Pointer, Root } from "./types";
 
 declare module "fvtt-types/configuration" {
@@ -7,6 +7,7 @@ declare module "fvtt-types/configuration" {
   }
 
   interface FlagConfig {
+    Macro: { "audio-codex": { [K in typeof TOGGLE_FLAG]?: string } };
     Playlist: { "audio-codex": { [K in typeof COVER_FLAG]?: string } };
     PlaylistSound: { "audio-codex": { [K in typeof COVER_FLAG]?: string } };
   }

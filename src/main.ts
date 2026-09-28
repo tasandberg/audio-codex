@@ -3,6 +3,7 @@ import { LibraryApp } from "./app/library-app";
 import { RootsApp, RootsMenu } from "./app/roots-app";
 import { MODULE_ID } from "./constants";
 import { decoratePlaylistDirectory } from "./foundry/sidebar-art";
+import { onHotbarDrop, refreshHotbar, toggleByUuid } from "./macro/hotbar";
 import { coverChanged, playlistCover, soundCover } from "./playlist/cover-resolve";
 import { service } from "./service";
 import { materializeMinimumRole, registerSettings, userCanUseCodex } from "./settings";
@@ -33,7 +34,7 @@ Hooks.once("init", () => {
 Hooks.once("ready", () => {
   void materializeMinimumRole();
   const module = game.modules.get(MODULE_ID);
-  if (module) Object.assign(module, { api: { open: () => LibraryApp.open(), sync: (force = false) => service.sync(force), service } });
+  if (module) Object.assign(module, { api: { open: () => LibraryApp.open(), sync: (force = false) => service.sync(force), togglePlayback: toggleByUuid, service } });
   let rendered = service.library;
   service.subscribe(() => {
     if (service.library === rendered) return;
@@ -53,6 +54,12 @@ const coverFor = (playlistId: string, soundId: string | null): string | null => 
 Hooks.on("updatePlaylist", (_playlist, changes) => {
   if (coverChanged(changes)) void ui.playlists?.render({ parts: ["directory", "playing"] });
 });
+
+Hooks.on("hotbarDrop", (hotbar, data, slot) => onHotbarDrop(hotbar, data, slot));
+Hooks.on("renderHotbar", () => refreshHotbar());
+for (const hook of ["updatePlaylist", "updatePlaylistSound", "deletePlaylist", "deletePlaylistSound"] as const) {
+  Hooks.on(hook, () => refreshHotbar());
+}
 
 Hooks.on("renderPlaylistDirectory", (_app, element) => {
   const actions = userCanUseCodex() ? element.querySelector(".header-actions") : null;
