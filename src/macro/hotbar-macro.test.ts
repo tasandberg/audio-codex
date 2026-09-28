@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { MODULE_ID, TOGGLE_FLAG } from "../constants";
-import { FALLBACK_ICON, PLAYING_CLASS, type Toggleable, findToggleMacro, macroSource, markPlayingSlots, toggle, toggleTarget, toggleUuid } from "./hotbar-macro";
+import { FALLBACK_ICON, PLAYING_CLASS, type Toggleable, findToggleMacro, macroSource, markPlayingSlots, togglePlayback, toggleTarget, toggleUuid } from "./hotbar-macro";
 
 const macro = (uuid: string | null, isOwner = true) => ({
   isOwner,
@@ -67,34 +67,34 @@ describe("toggleUuid and findToggleMacro", () => {
   });
 });
 
-describe("toggle", () => {
+describe("togglePlayback", () => {
   it("starts and stops a playlist", async () => {
     const idle = playlist(false);
-    expect(await toggle(idle)).toBe("played");
+    expect(await togglePlayback(idle)).toBe("played");
     expect(idle.playAll).toHaveBeenCalled();
     const playing = playlist(true);
-    expect(await toggle(playing)).toBe("stopped");
+    expect(await togglePlayback(playing)).toBe("stopped");
     expect(playing.stopAll).toHaveBeenCalled();
   });
 
   it("plays and stops a sound through its playlist", async () => {
     const parent = playlist(false);
     const idle = { documentName: "PlaylistSound" as const, playing: false, isOwner: true, parent };
-    expect(await toggle(idle)).toBe("played");
+    expect(await togglePlayback(idle)).toBe("played");
     expect(parent.playSound).toHaveBeenCalledWith(idle);
     const playing = { ...idle, playing: true };
-    expect(await toggle(playing)).toBe("stopped");
+    expect(await togglePlayback(playing)).toBe("stopped");
     expect(parent.stopSound).toHaveBeenCalledWith(playing);
   });
 
   it("reports missing or unowned documents without acting", async () => {
     const denied = playlist(false, false);
-    expect(await toggle(null)).toBe("missing");
-    expect(await toggle({ documentName: "PlaylistSound", playing: false, isOwner: true, parent: null })).toBe("missing");
-    expect(await toggle(denied)).toBe("denied");
+    expect(await togglePlayback(null)).toBe("missing");
+    expect(await togglePlayback({ documentName: "PlaylistSound", playing: false, isOwner: true, parent: null })).toBe("missing");
+    expect(await togglePlayback(denied)).toBe("denied");
     expect(denied.playAll).not.toHaveBeenCalled();
     const parent = playlist(false);
-    expect(await toggle({ documentName: "PlaylistSound", playing: false, isOwner: false, parent } as Toggleable)).toBe("denied");
+    expect(await togglePlayback({ documentName: "PlaylistSound", playing: false, isOwner: false, parent } as Toggleable)).toBe("denied");
     expect(parent.playSound).not.toHaveBeenCalled();
   });
 });

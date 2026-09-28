@@ -80,7 +80,7 @@ export function findToggleMacro<T extends ToggleMacro>(macros: Iterable<T>, uuid
   return null;
 }
 
-export async function toggle(doc: Toggleable | null | undefined): Promise<ToggleOutcome> {
+export async function togglePlayback(doc: Toggleable | null | undefined): Promise<ToggleOutcome> {
   if (!doc) return "missing";
   if (doc.documentName === "Playlist") {
     if (!doc.isOwner) return "denied";

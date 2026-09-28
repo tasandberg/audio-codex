@@ -2,7 +2,7 @@ import { localize } from "../foundry/i18n";
 import { playlistCover, soundCover } from "../playlist/cover-resolve";
 import { service } from "../service";
 import { userCanUseCodex } from "../settings";
-import { type ToggleTarget, type Toggleable, findToggleMacro, macroSource, markPlayingSlots, toggle, toggleTarget, toggleUuid } from "./hotbar-macro";
+import { type ToggleTarget, type Toggleable, findToggleMacro, macroSource, markPlayingSlots, togglePlayback, toggleTarget, toggleUuid } from "./hotbar-macro";
 
 type Playlist = foundry.documents.Playlist.Implementation;
 type PlaylistSound = foundry.documents.PlaylistSound.Implementation;
@@ -15,7 +15,7 @@ const OUTCOME_WARNINGS: Record<string, string> = {
 
 export async function toggleByUuid(uuid: string): Promise<void> {
   const doc = (await fromUuid(uuid)) as unknown as Toggleable | null;
-  const warning = OUTCOME_WARNINGS[await toggle(doc)];
+  const warning = OUTCOME_WARNINGS[await togglePlayback(doc)];
   if (warning) ui.notifications?.warn(localize(warning));
 }
 
