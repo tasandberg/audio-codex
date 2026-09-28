@@ -3,8 +3,10 @@ import { LibraryApp } from "./app/library-app";
 import { RootsApp, RootsMenu } from "./app/roots-app";
 import { MODULE_ID } from "./constants";
 import { decoratePlaylistDirectory } from "./foundry/sidebar-art";
+import { decorateSoundChannels } from "./foundry/sidebar-channel";
 import { onHotbarDrop, refreshHotbar, toggleByUuid } from "./macro/hotbar";
 import { coverChanged, playlistCover, soundCover } from "./playlist/cover-resolve";
+import { type AudioChannel, effectiveChannel } from "./playlist/sound-channel";
 import { service } from "./service";
 import { materializeMinimumRole, registerSettings, userCanUseCodex } from "./settings";
 
@@ -51,6 +53,12 @@ const coverFor = (playlistId: string, soundId: string | null): string | null => 
   return sound ? soundCover(sound, playlist, service.library) : playlistCover(playlist, service.library);
 };
 
+const channelFor = (playlistId: string, soundId: string): AudioChannel | null => {
+  const playlist = game.playlists.get(playlistId);
+  const sound = playlist?.sounds.get(soundId);
+  return sound ? effectiveChannel(sound, playlist) : null;
+};
+
 Hooks.on("updatePlaylist", (_playlist, changes) => {
   if (coverChanged(changes)) void ui.playlists?.render({ parts: ["directory", "playing"] });
 });
@@ -72,4 +80,5 @@ Hooks.on("renderPlaylistDirectory", (_app, element) => {
     actions.append(button);
   }
   decoratePlaylistDirectory(element, coverFor);
+  decorateSoundChannels(element, channelFor, (key) => game.i18n.localize(key));
 });

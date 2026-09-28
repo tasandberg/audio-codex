@@ -341,3 +341,9 @@ img.ac-sidebar-now-art {
   text-shadow: 0 0 3px #000;
   pointer-events: none;
 }
+
+i.ac-sound-channel {
+  flex: 0 0 auto;
+  font-size: var(--font-size-10, 0.625rem);
+  opacity: 0.5;
+}

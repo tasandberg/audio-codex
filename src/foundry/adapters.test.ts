@@ -34,7 +34,7 @@ const playlist = (id: string, name: string, sounds: StubSound[], order: string[]
   getFlag: () => cover,
 });
 
-function stubGame(playlists: ReturnType<typeof playlist>[]): void {
+function stubGame(playlists: (ReturnType<typeof playlist> & { channel?: string })[]): void {
   vi.stubGlobal("game", { i18n: { lang: "en" }, playlists: { contents: playlists, sortingMode: "m" } });
 }
 
@@ -46,7 +46,14 @@ describe("playlistSources", () => {
     stubGame([playlist("p1", "Tavern", sounds, ["s1", "s2", "s3"])]);
     const [source] = playlistSources(new Set(["p1"]), library);
     expect(source.count).toBe(1);
-    expect(source.sounds).toEqual([{ id: "s2", name: "Two", cover: null }]);
+    expect(source.sounds).toEqual([{ id: "s2", name: "Two", cover: null, channel: "music" }]);
+  });
+
+  it("resolves each sound's channel, inheriting the playlist's when blank", () => {
+    const sounds = [{ ...sound("s1", "One", true, false), channel: "" }, { ...sound("s2", "Two", true, false), channel: "interface" }];
+    stubGame([{ ...playlist("p1", "Tavern", sounds, ["s1", "s2"]), channel: "environment" }]);
+    const [source] = playlistSources(new Set(["p1"]), library);
+    expect(source.sounds.map((entry) => entry.channel)).toEqual(["environment", "interface"]);
   });
 
   it("lists every sound in playback order for the owner", () => {

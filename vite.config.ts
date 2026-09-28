@@ -20,14 +20,14 @@ export default defineConfig({
           name: "node",
           environment: "node",
           include: ["src/**/*.test.ts", "test/**/*.test.ts"],
-          exclude: ["**/node_modules/**", "**/dist/**", "src/foundry/sidebar-art.test.ts"],
+          exclude: ["**/node_modules/**", "**/dist/**", "src/foundry/sidebar-art.test.ts", "src/foundry/sidebar-channel.test.ts"],
         },
       },
       {
         test: {
           name: "dom",
           environment: "happy-dom",
-          include: ["src/foundry/sidebar-art.test.ts"],
+          include: ["src/foundry/sidebar-art.test.ts", "src/foundry/sidebar-channel.test.ts"],
         },
       },
     ],

@@ -1,4 +1,5 @@
 import type { Row, SortColumn, SortState, Track } from "../library/library";
+import { type AudioChannel, channelIcon, channelLabel } from "../playlist/sound-channel";
 import type { SyncProgress } from "../sync/sync";
 
 export interface FolderView {
@@ -38,6 +39,9 @@ export interface SoundView {
   id: string;
   name: string;
   cover: string;
+  channel: AudioChannel;
+  channelIcon: string;
+  channelLabel: string;
 }
 
 export interface PlaylistView {
@@ -54,7 +58,7 @@ export interface PlaylistSource {
   name: string;
   cover: string | null;
   count: number;
-  sounds: Array<{ id: string; name: string; cover: string | null }>;
+  sounds: Array<{ id: string; name: string; cover: string | null; channel: AudioChannel }>;
 }
 
 export interface ColumnView {
@@ -140,7 +144,16 @@ export function playlistViews(playlists: PlaylistSource[], expanded: ReadonlySet
       count: playlist.count,
       cover: playlist.cover ?? "",
       expanded: open,
-      sounds: open ? playlist.sounds.map((sound) => ({ id: sound.id, name: sound.name, cover: sound.cover ?? "" })) : [],
+      sounds: open
+        ? playlist.sounds.map((sound) => ({
+            id: sound.id,
+            name: sound.name,
+            cover: sound.cover ?? "",
+            channel: sound.channel,
+            channelIcon: channelIcon(sound.channel),
+            channelLabel: channelLabel(sound.channel),
+          }))
+        : [],
     };
   });
 }
